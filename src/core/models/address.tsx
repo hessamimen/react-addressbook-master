@@ -1,4 +1,6 @@
-export default function transformAddress(data) {
+import { AddressType } from "../../types";
+
+export default function transformAddress(data: AddressType) {
   const { firstName, lastName, city, houseNumber, lat, lon, postcode, street } =
     data;
   return {
