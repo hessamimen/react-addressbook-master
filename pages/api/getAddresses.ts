@@ -33,31 +33,29 @@ export default async function handle(
     });
   }
 
-  /** TODO: Refactor the code below so there is no duplication of logic for postCode/streetNumber digit checks. */
+  /** TODO: Refactor the code below so there is no duplication of logic for postCode/houseNumber digit checks. */
 
-  const postCode = parseInt(postcode as string);
+  //EXPLANATION:  The previous implementation was converting the input to an integer, so when the first character was a letter, it would throw an error; otherwise, if the letter was at the end, it wouldn't throw an error!
+  //Now it checks the whole input with a regex pattern to have all characters be digits, and there is no duplication in that logic.
+  const validateInput = (input: string, name: string): Error | null => {
+    const isInputAllDigits = /^\d+$/.test(input);
 
-  if (isNaN(postCode)) {
-    return res.status(400).send({
-      status: "error",
-      errormessage: "Postcode must be all digits!",
-    });
+    if (!isInputAllDigits) {
+      return {
+        status: "error",
+        errormessage: `${name} must be all digits!`,
+      };
+    }
+    return null;
+  };
+
+  const postCodeError = validateInput(postcode as string, "Postcode");
+  const houseNumberError = validateInput(housenumber as string, "House number");
+  if (postCodeError) {
+    return res.status(400).send(postCodeError);
   }
-
-  const streetNumber = parseInt(streetnumber as string);
-  const houseNumber = parseInt(housenumber as string);
-
-  // if (isNaN(streetNumber)) {
-  //   return res.status(400).send({
-  //     status: "error",
-  //     errormessage: "Street number must be all digits!",
-  //   });
-  // }
-  if (isNaN(houseNumber)) {
-    return res.status(400).send({
-      status: "error",
-      errormessage: "Street number must be all digits!",
-    });
+  if (houseNumberError) {
+    return res.status(400).send(houseNumberError);
   }
 
   const mockAddresses = generateMockAddresses(
