@@ -19,7 +19,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/ui/components/AddressBook/AddressBook.js"
+    "src/ui/components/AddressBook/AddressBook.tsx"
   ],
   "exclude": ["node_modules"]
 }
