@@ -19,7 +19,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/ui/components/AddressBook/AddressBook.tsx"
+    "src/ui/components/AddressBook/AddressBook.tsx",
+    "pages/_document.jsx"
   ],
   "exclude": ["node_modules"]
 }
