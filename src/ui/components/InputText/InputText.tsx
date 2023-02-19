@@ -1,8 +1,9 @@
 import React from "react";
 
 import $ from "./InputText.module.css";
+import { InputTextProps } from "../../../types";
 
-const InputText = ({ name, onChange, placeholder, value }) => {
+const InputText = ({ name, onChange, placeholder, value }: InputTextProps) => {
   return (
     <input
       className={$.inputText}
