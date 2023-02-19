@@ -1,9 +1,7 @@
 import React from "react";
+
 // Custom Hooks
-import useAddressBook from "./ui/hooks/useAddressBook";
 import useForm from "./ui/hooks/useForm";
-// Functions
-import { handleAddressSubmit, handlePersonSubmit } from "./utils/functions";
 // Components
 import Address from "./ui/components/Address/Address";
 import AddressBook from "./ui/components/AddressBook/AddressBook";
@@ -24,48 +22,16 @@ function App() {
    * - Remove all individual React.useState
    * - Remove all individual onChange handlers, like handlePostCodeChange for example
    */
-
-  /** Results states */
-  const [addresses, setAddresses] = React.useState<any[]>([]);
-  /** Error handling states */
-  const [error, setError] = React.useState<string | undefined>(undefined);
-  /** Redux actions */
-  const { addAddress } = useAddressBook();
-  /** Loading state in the UI while fetching addresses*/
-  const [loading, setLoading] = React.useState(false);
-  /** Implement custom hook to set form fields in a more generic way*/
-  const initialState = {
-    postCode: "",
-    houseNumber: "",
-    firstName: "",
-    lastName: "",
-    selectedAddress: "",
-  };
-  /* An arraye of functions to be able to have multiple submit handlers if needed */
-  const onSubmitFunctions = [
-    () =>
-      handleAddressSubmit(
-        postCode,
-        houseNumber,
-        setAddresses,
-        setError,
-        setLoading
-      ),
-    () =>
-      handlePersonSubmit(
-        addresses,
-        selectedAddress,
-        firstName,
-        lastName,
-        setError,
-        addAddress
-      ),
-  ];
-  /** Using the custom hook useForm by providing the initial states and submit Functions */
-  const { formData, handleInputChange, handleSubmit, resetForm } = useForm(
-    initialState,
-    onSubmitFunctions
-  );
+  const {
+    formData,
+    handleInputChange,
+    handleAddressSubmit,
+    handlePersonSubmit,
+    resetForm,
+    addresses,
+    error,
+    loading,
+  } = useForm();
   /** Destructure the data required from the useForm hook */
   const { postCode, houseNumber, firstName, lastName, selectedAddress } =
     formData;
@@ -81,13 +47,12 @@ function App() {
           </small>
         </h1>
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        {/* EXPLANATION: here, we can define the submit function by providing the index from the onSubmitFunctions we defined earlier for each individual generic form */}
         <Form
-          submitHandler={(event) => handleSubmit(event, [0])}
+          submitHandler={handleAddressSubmit}
           legendText="🏠 Find an address"
           buttonText="Find"
           onChange={handleInputChange}
-          // here we can easily add a new value to the value array and add a row to the formRows array if we need more input fields
+          //** Here we can easily add a new value to the value arraye and add a row to the formRows array if we need more inpute fields*/
           value={[postCode, houseNumber]}
           formRows={[
             {
@@ -119,7 +84,7 @@ function App() {
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
         {selectedAddress && (
           <Form
-            submitHandler={(event) => handleSubmit(event, [1])}
+            submitHandler={handlePersonSubmit}
             legendText="✏️ Add personal info to address"
             buttonText="Add to addressbook"
             onChange={handleInputChange}
@@ -150,8 +115,6 @@ function App() {
           variant="secondary"
           onClick={() => {
             resetForm();
-            setAddresses([]);
-            setError("");
           }}
         >
           Clear all fields
