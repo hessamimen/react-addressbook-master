@@ -65,3 +65,12 @@ fieldset {
 legend {
   color: var(--color-text-light);
 }
+@media only screen and (max-width: 355px) {
+  body {
+    font-size: 16px;
+    min-width: 250px;
+  }
+  main {
+    padding: 1rem;
+  }
+}

@@ -22,3 +22,10 @@
 .item h3 {
   margin: 0 0 0.5em;
 }
+
+@media only screen and (max-width: 455px) {
+  .item {
+    display: block;
+    flex-direction: column;
+  }
+}
