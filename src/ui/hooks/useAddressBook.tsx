@@ -3,25 +3,27 @@ import { useDispatch, useStore } from "react-redux";
 
 import transformAddress from "../../core/models/address";
 import databaseService from "../../core/services/databaseService";
+import { AddressType } from "../../types";
+import { UseAddressBook } from "../../types";
 
-export default function useAddressBook() {
+export default function useAddressBook(): UseAddressBook {
   const dispatch = useDispatch();
   const store = useStore();
   const [loading, setLoading] = React.useState(true);
 
   const updateDatabase = React.useCallback(() => {
-    const state = store.getState();
+    const state: any = store.getState();
     databaseService.setItem("addresses", state.addressBook.addresses);
   }, [store]);
 
   return {
     /** Add address to the redux store */
-    addAddress: (address) => {
+    addAddress: (address: AddressType) => {
       dispatch({ type: "address/add", payload: address });
       updateDatabase();
     },
     /** Remove address by ID from the redux store */
-    removeAddress: (id) => {
+    removeAddress: (id: string) => {
       dispatch({ type: "address/remove", payload: id });
       updateDatabase();
     },
