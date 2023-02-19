@@ -1,19 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import generateMockAddresses from "../../src/utils/generateMockAddresses";
-
+type Error = {
+  status: string;
+  errormessage: string;
+};
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const {
-    query: { postcode, streetnumber },
+    query: { postcode, streetnumber, housenumber },
   } = req;
 
-  if (!postcode || !streetnumber) {
+  if (!postcode || !housenumber) {
     return res.status(400).send({
       status: "error",
-      errormessage: "Postcode and street number fields mandatory!",
+      errormessage: "Postcode and house number fields mandatory!",
     });
   }
 
@@ -21,6 +24,12 @@ export default async function handle(
     return res.status(400).send({
       status: "error",
       errormessage: "Postcode must be at least 4 digits!",
+    });
+  }
+  if (+housenumber > 3) {
+    return res.status(400).send({
+      status: "error",
+      errormessage: "House Number must be below 4!",
     });
   }
 
@@ -36,8 +45,15 @@ export default async function handle(
   }
 
   const streetNumber = parseInt(streetnumber as string);
+  const houseNumber = parseInt(housenumber as string);
 
-  if (isNaN(streetNumber)) {
+  // if (isNaN(streetNumber)) {
+  //   return res.status(400).send({
+  //     status: "error",
+  //     errormessage: "Street number must be all digits!",
+  //   });
+  // }
+  if (isNaN(houseNumber)) {
     return res.status(400).send({
       status: "error",
       errormessage: "Street number must be all digits!",
@@ -46,7 +62,8 @@ export default async function handle(
 
   const mockAddresses = generateMockAddresses(
     postcode as string,
-    streetnumber as string
+    streetnumber as string,
+    housenumber as string
   );
   if (mockAddresses) {
     return res.status(200).json({
