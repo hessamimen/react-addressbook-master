@@ -1,10 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Error } from "../../src/types";
 
 import generateMockAddresses from "../../src/utils/generateMockAddresses";
-type Error = {
-  status: string;
-  errormessage: string;
-};
+
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse

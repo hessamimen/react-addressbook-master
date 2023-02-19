@@ -44,7 +44,7 @@ type errorMsgProps = {
 };
 
 type FormProps = {
-  submitHandler: (e: React.FormEvent) => void;
+  submitHandler: (e: React.FormEvent<HTMLFormElement>) => void;
   legendText: string;
   buttonText: string;
   formRows: {
@@ -63,7 +63,7 @@ type InputTextProps = {
 };
 
 type RadioProps = {
-  children: string;
+  children: React.ReactNode;
   id: string;
   name: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -71,7 +71,11 @@ type RadioProps = {
 
 type SectionProps = {
   children: React.ReactNode;
-  variant: string;
+  variant?: string;
+};
+type Error = {
+  status: string;
+  errormessage: string;
 };
 
 export type {
@@ -87,4 +91,5 @@ export type {
   FormInitialState,
   SubmitFunction,
   UseAddressBook,
+  Error,
 };
