@@ -24,8 +24,7 @@ const streetNumberToStreetMapping = {
 
 const generateMockAddresses = (
   postcode: string,
-  streetNumber: string = "2",
-  // streetNumber: string = (Math.floor(Math.random() * 9) + 1).toString(),
+  streetNumber: string = "1",
   houseNumber: string
 ) => {
   const postcodeFirstChar = parseInt(postcode.substring(0, 1));
@@ -39,35 +38,20 @@ const generateMockAddresses = (
   ];
 
   if (postcodeMapping) {
-    return [
-      {
+    const addresses = [];
+    //EXPLANATION: As it was required by test to send query by House number and postcode, I updated this part so we can have access to 10 house number(instead of the 3 initial houses).
+    for (let i = 1; i < 10; i++) {
+      addresses.push({
         id: Math.floor(Math.random() * 1000),
         city: postcodeMapping,
-        houseNumber: "1",
+        houseNumber: i.toString(),
         postcode,
-        street: `${streetNumber} ${streetMapping}`,
+        street: `${10 - i} ${streetMapping}`,
         lat: Math.random(),
         long: Math.random(),
-      },
-      {
-        id: Math.floor(Math.random() * 1000),
-        city: postcodeMapping,
-        houseNumber: "2",
-        postcode,
-        street: `${streetNumber} ${streetMapping}`,
-        lat: Math.random(),
-        long: Math.random(),
-      },
-      {
-        id: Math.floor(Math.random() * 1000),
-        city: postcodeMapping,
-        houseNumber: "3",
-        postcode,
-        street: `${streetNumber} ${streetMapping}`,
-        lat: Math.random(),
-        long: Math.random(),
-      },
-    ].filter((item) => item.houseNumber === houseNumber);
+      });
+    }
+    return addresses.filter((item) => item.houseNumber === houseNumber);
   }
 
   return null;

@@ -26,10 +26,10 @@ export default async function handle(
       errormessage: "Postcode must be at least 4 digits!",
     });
   }
-  if (+housenumber > 3) {
+  if (+housenumber > 9) {
     return res.status(400).send({
       status: "error",
-      errormessage: "House Number must be below 4!",
+      errormessage: "House Number must be below 10!",
     });
   }
 
